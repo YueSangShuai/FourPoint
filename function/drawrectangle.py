@@ -52,7 +52,7 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
             # save_data = [str(0)] + box + tempdata1[1:]
             # save.append(save_data)
             for cls in dict:
-                if cls[1] == int(tempdata1[0]):
+                if cls[0] == int(tempdata1[0]):
                     save_data = [str(cls[1])] + box + point1 + point4 + point3 + point2+[str(-1),str(-1)]
                     save.append(save_data)
         f.close()
@@ -68,8 +68,8 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
 
 
 # image_path = r'..\dataset\test\images/'
-label_path = r'E:\Robotmaster\rm\txt\\'
-imwrite_path = r'E:\Robotmaster\rm\labels\\'
+label_path = r'E:\Robotmaster\2021-RMUC-0417-0916\txt\\'
+imwrite_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'
 changelabel(label_path, imwrite_path, 1, 1)
 
 # img_PIL = cv2.imread(r'E:\Robotmaster\dataset\mydata\images\train\9.jpg')

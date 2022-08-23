@@ -6,8 +6,8 @@ from pathlib import Path
 
 from tqdm import tqdm
 
-xml_path = r'E:\Robotmaster\dataset\mydata\labels\train\\'  # 标注文件路径
-image_path = r'E:\Robotmaster\dataset\mydata\images\train\\'  # 数据原图路径
+xml_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'  # 标注文件路径
+image_path = r'E:\Robotmaster\2021-RMUC-0417-0916\images\\'  # 数据原图路径
 image_lst = os.listdir(image_path)
 xml_lst = os.listdir(xml_path)
 xml_filename = []

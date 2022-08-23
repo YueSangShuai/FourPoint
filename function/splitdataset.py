@@ -5,17 +5,17 @@ import random
 import os
 
 # 原始路径
-image_original_path = r'E:\Robotmaster\dataset\mydata\images\train\\'
-label_original_path = r'E:\Robotmaster\dataset\mydata\labels\train\\'
+image_original_path = r'E:\Robotmaster\2021-RMUC-0417-0916\images\\'
+label_original_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'
 # 训练集路径
-train_image_path = r'E:\Robotmaster\mydata\images\train\\'
-train_label_path = r'E:\Robotmaster\mydata\labeles\train\\'
+train_image_path = r'E:\Robotmaster\rmdata\images\train\\'
+train_label_path = r'E:\Robotmaster\rmdata\labeles\train\\'
 # 验证集路径
-val_image_path = r'E:\Robotmaster\mydata\images\val\\'
-val_label_path = r'E:\Robotmaster\mydata\labeles\val\\'
+val_image_path = r'E:\Robotmaster\rmdata\images\val\\'
+val_label_path = r'E:\Robotmaster\rmdata\labeles\val\\'
 # 测试集路径
-test_image_path = r'E:\Robotmaster\mydata\images\test\\'
-test_label_path = r'E:\Robotmaster\mydata\labeles\test\\'
+test_image_path = r'E:\Robotmaster\rmdata\images\test\\'
+test_label_path = r'E:\Robotmaster\rmdata\labeles\test\\'
 
 # 数据集划分比例，训练集75%，验证集15%，测试集15%
 train_percent = 0.7
