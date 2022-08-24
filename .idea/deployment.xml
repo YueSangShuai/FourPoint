@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="root@region-5.autodl.com:44372" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
       <paths name="root@i-2.gpushare.com:50138">
         <serverdata>
@@ -93,6 +93,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="root@region-5.autodl.com:44372">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/tmp/pycharm_project_643" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="root@region-5.autodl.com:46895">
         <serverdata>
           <mappings>
@@ -122,5 +129,6 @@
         </serverdata>
       </paths>
     </serverData>
+    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

@@ -23,6 +23,6 @@ def count(label_path):
 
 
 if __name__ == '__main__':
-    label_path = r'E:\Robotmaster\kaiyuanzhuagnjiaban\2021-RMUC-SYHK-1021\labels\\'
+    label_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'
     print(count(label_path))
     print(len(count(label_path)))
