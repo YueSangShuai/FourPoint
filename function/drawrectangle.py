@@ -50,8 +50,8 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
             points = np.split(tempdata2, len(tempdata2) // 2)
             x = str((points[0][0] + points[2][0]) / 2)
             y = str((points[0][1] + points[2][1]) / 2)
-            w = str((max(points[2][0], points[0][0]) - min(points[2][0], points[0][0])) )
-            h = str((max(points[0][1], points[2][1]) - min(points[0][1], points[2][1])) )
+            w = str((max(points[2][0], points[0][0]) - min(points[2][0], points[0][0])))
+            h = str((max(points[0][1], points[2][1]) - min(points[0][1], points[2][1])))
             box = [x, y, w, h]
             point1 = tempdata1[1:3]
             point2 = tempdata1[3:5]
