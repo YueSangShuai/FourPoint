@@ -23,8 +23,8 @@ def before_guiyi(x, w, h):
     return y
 
 
-image_path = r'E:\Robotmaster\2021-RMUC-0417-0916\images\\'
-xml_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'  # 数据原图路径
+image_path = r'C:\Users\59781\Desktop\mydata\mydata\train\images\\'
+xml_path = r'C:\Users\59781\Desktop\mydata\mydata\train\labels\\'  # 数据原图路径
 
 image_lst = os.listdir(image_path)
 xml_lst = os.listdir(xml_path)

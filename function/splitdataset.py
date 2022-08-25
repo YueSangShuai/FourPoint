@@ -8,14 +8,14 @@ import os
 image_original_path = r'E:\Robotmaster\2021-RMUC-0417-0916\images\\'
 label_original_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'
 # 训练集路径
-train_image_path = r'E:\Robotmaster\rmdata\images\train\\'
-train_label_path = r'E:\Robotmaster\rmdata\labeles\train\\'
+train_image_path = r'E:\Robotmaster\rmdata\train\images\\'
+train_label_path = r'E:\Robotmaster\rmdata\train\labels\\'
 # 验证集路径
-val_image_path = r'E:\Robotmaster\rmdata\images\val\\'
-val_label_path = r'E:\Robotmaster\rmdata\labeles\val\\'
+val_image_path = r'E:\Robotmaster\rmdata\val\images\\'
+val_label_path = r'E:\Robotmaster\rmdata\val\labels\\'
 # 测试集路径
-test_image_path = r'E:\Robotmaster\rmdata\images\test\\'
-test_label_path = r'E:\Robotmaster\rmdata\labeles\test\\'
+test_image_path = r'E:\Robotmaster\rmdata\test\images\\'
+test_label_path = r'E:\Robotmaster\rmdata\test\labels\\'
 
 # 数据集划分比例，训练集75%，验证集15%，测试集15%
 train_percent = 0.7

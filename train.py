@@ -434,8 +434,8 @@ if __name__ == '__main__':
     parser.add_argument('--cfg', type=str, default='models/yolov5s.yaml', help='model.yaml path')
     parser.add_argument('--data', type=str, default='data/rm.yaml', help='data.yaml path')
     parser.add_argument('--hyp', type=str, default='data/hyp.scratch.yaml', help='hyperparameters path')
-    parser.add_argument('--epochs', type=int, default=2000)
-    parser.add_argument('--batch-size', type=int, default=32, help='total batch size for all GPUs')
+    parser.add_argument('--epochs', type=int, default=300)
+    parser.add_argument('--batch-size', type=int, default=2, help='total batch size for all GPUs')
     parser.add_argument('--img-size', nargs='+', type=int, default=[640, 640], help='[train, test] image sizes')
     parser.add_argument('--rect', action='store_true', help='rectangular training')
     parser.add_argument('--resume', nargs='?', const=True, default=False, help='resume most recent training')
@@ -454,7 +454,7 @@ if __name__ == '__main__':
     parser.add_argument('--local_rank', type=int, default=-1, help='DDP parameter, do not modify')
     parser.add_argument('--log-imgs', type=int, default=16, help='number of images for W&B logging, max 100')
     parser.add_argument('--log-artifacts', action='store_true', help='log artifacts, i.e. final trained model')
-    parser.add_argument('--workers', type=int, default=64, help='maximum number of dataloader workers')
+    parser.add_argument('--workers', type=int, default=16, help='maximum number of dataloader workers')
     parser.add_argument('--project', default='runs/train', help='save to project/name')
     parser.add_argument('--name', default='exp', help='save to project/name')
     parser.add_argument('--exist-ok', action='store_true', help='existing project/name ok, do not increment')
@@ -495,7 +495,7 @@ if __name__ == '__main__':
         opt.batch_size = opt.total_batch_size // opt.world_size
 
     # Hyperparameters
-    with open(opt.hyp) as f:
+    with open(opt.hyp,encoding='utf-8') as f:
         hyp = yaml.load(f, Loader=yaml.FullLoader)  # load hyps
         if 'box' not in hyp:
             warn('Compatibility: %s missing "box" which was renamed from "giou" in %s' %

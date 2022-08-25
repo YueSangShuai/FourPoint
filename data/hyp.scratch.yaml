@@ -10,7 +10,7 @@ weight_decay: 0.0005  # optimizer weight decay 5e-4
 warmup_epochs: 3.0  # warmup epochs (fractions ok)
 warmup_momentum: 0.8  # warmup initial momentum
 warmup_bias_lr: 0.1  # warmup initial bias lr
-box: 0.05  # box loss gain
+box: 0.005  # box loss gain
 cls: 0.5  # cls loss gain
 landmark: 0.05 # landmark loss gain
 cls_pw: 1.0  # cls BCELoss positive_weight
@@ -22,7 +22,7 @@ anchor_t: 4.0  # anchor-multiple threshold
 fl_gamma: 0.0  # focal loss gamma (efficientDet default gamma=1.5)
 hsv_h: 0.015  # 色调
 hsv_s: 0.7  # 饱和度
-hsv_v: 0.4  # 明度
+hsv_v: 0.0  # 明度
 degrees: 0.5  # 旋转角度
 translate: 0.1  # 水平和垂直平移
 scale: 0.5  # 缩放
@@ -33,5 +33,5 @@ fliplr: 0.5  # 左右反转
 mosaic: 0.5  # 发生马赛克的概率 (probability)
 mixup: 0.0  # image mixup (probability)
 
-blur_limit: [20, 25] #运动模糊的概率
+blur_limit: [0, 25] #运动模糊的概率
 p: 1 #运动模糊的概率

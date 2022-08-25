@@ -211,14 +211,14 @@ def detect_video(model, image, device, image_size, conf_thres, iou_thres):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str,
-                        default=r'runs/train/RM3/weights/best.pt',
+                        default=r'runs/train/RM/weights/best.pt',
                         help='model.pt path(s)')
     parser.add_argument('--image', type=str, default=r"E:\Robotmaster\rmdata\train\images\515.jpg",
                         help='source')  # file/folder, 0 for webcam
     parser.add_argument('--img_size', type=int, default=640, help='inference size (pixels)')
-    parser.add_argument('--video', default=r"C:\Users\59781\Desktop\1.mp4", help='using video')
-    parser.add_argument('--conf_thres', type=float, default=0.5, help='')
-    parser.add_argument('--iou_thres', type=float, default=0.5, help='')
+    parser.add_argument('--video', default=r"C:\Users\59781\Desktop\dataset\video\video\c2bc1b4444783bb5c1027a564b59f88d.mp4", help='using video')
+    parser.add_argument('--conf_thres', type=float, default=0.3, help='')
+    parser.add_argument('--iou_thres', type=float, default=0.3, help='')
 
     opt = parser.parse_args()
     print(opt)
