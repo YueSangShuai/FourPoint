@@ -50,14 +50,13 @@ for xml in xml_filename:
     for lines in dataset:
         temp = lines.split()
 
-        _temp = np.array([float(x) for x in temp[5:]])
+        _temp = np.array([float(x) for x in temp[1:]])
 
         points = np.split(_temp, len(_temp) // 2)
-        # cv2.circle(img, before_guiyi(points[1], h, w), 5, (255, 0, 255))
-        temp_rect = xywhn2xyxy(np.array([float(x) for x in temp[1:5]]), w, h)
-        print(np.array([float(x) for x in temp[1:5]]))
+        print(points[1])
+        cv2.circle(img, before_guiyi(points[0], h, w), 5, (255, 0, 255))
+        temp_rect = xywhn2xyxy(np.array([float(x) for x in temp[1:5]]), h, w)
         cv2.rectangle(img, (int(temp_rect[0]), int(temp_rect[1])), (int(temp_rect[2]), int(temp_rect[3])), (255, 0, 255),2)
-    # cv2.rectangle(img, )
     cv2.imshow(xml, img)
     cv2.waitKey(1500)
     cv2.destroyAllWindows()
