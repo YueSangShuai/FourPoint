@@ -5,6 +5,16 @@ import numpy as np
 import torch
 
 
+def xywhn2xyxy(x, w, h):
+    # Convert nx4 boxes from [x, y, w, h] normalized to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
+    y = x.clone() if isinstance(x, torch.Tensor) else np.copy(x)
+    y[0] = int(w * (x[0] - x[2] / 2))  # top left x
+    y[1] = int(h * (x[1] - x[3] / 2))  # top left y
+    y[2] = int(w * (x[0] + x[2] / 2))  # bottom right x
+    y[3] = int(h * (x[1] + x[3] / 2))  # bottom right y
+    return y
+
+
 def before_guiyi(x, w, h):
     y = x.clone() if isinstance(x, torch.Tensor) else np.copy(x)
     y[0] = int(w * x[0])
@@ -43,16 +53,11 @@ for xml in xml_filename:
         _temp = np.array([float(x) for x in temp[5:]])
 
         points = np.split(_temp, len(_temp) // 2)
-
-        print(points)
         # cv2.circle(img, before_guiyi(points[1], h, w), 5, (255, 0, 255))
-    temp_rect_center = before_guiyi(np.array([float(x) for x in temp[0:2]]), w, h)
-    temp_rect_wh = before_guiyi(np.array([float(x) for x in temp[0:2]]), w, h)
-    x1=temp_rect_center[0]-temp_rect_wh[0]
-    y1=temp_rect_center[1]+temp_rect_wh[1]
-    x2=temp_rect_center[0]+temp_rect_wh[0]
-    y3=temp_rect_center[1]-temp_rect_wh[1]
-    cv2.rectangle(img,)
+        temp_rect = xywhn2xyxy(np.array([float(x) for x in temp[1:5]]), w, h)
+        print(np.array([float(x) for x in temp[1:5]]))
+        cv2.rectangle(img, (int(temp_rect[0]), int(temp_rect[1])), (int(temp_rect[2]), int(temp_rect[3])), (255, 0, 255),2)
+    # cv2.rectangle(img, )
     cv2.imshow(xml, img)
     cv2.waitKey(1500)
     cv2.destroyAllWindows()

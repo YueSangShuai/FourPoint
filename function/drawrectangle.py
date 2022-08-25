@@ -9,13 +9,13 @@ import os
 from count_classes import *
 
 
-def xywhn2xyxy(x, w, h, padw=0, padh=0):
+def xywhn2xyxy(x, w, h):
     # Convert nx4 boxes from [x, y, w, h] normalized to [x1, y1, x2, y2] where xy1=top-left, xy2=bottom-right
     y = x.clone() if isinstance(x, torch.Tensor) else np.copy(x)
-    y[0] = w * (x[0] - x[2] / 2) + padw  # top left x
-    y[1] = h * (x[1] - x[3] / 2) + padh  # top left y
-    y[2] = w * (x[0] + x[2] / 2) + padw  # bottom right x
-    y[3] = h * (x[1] + x[3] / 2) + padh  # bottom right y
+    y[0] = int(w * (x[0] - x[2] / 2))   # top left x
+    y[1] = int(h * (x[1] - x[3] / 2))  # top left y
+    y[2] = int(w * (x[0] + x[2] / 2))   # bottom right x
+    y[3] = int(h * (x[1] + x[3] / 2))   # bottom right y
     return y
 
 
@@ -48,10 +48,10 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
             tempdata1 = line.split()
             tempdata2 = np.array([float(x) for x in tempdata1[1:]])
             points = np.split(tempdata2, len(tempdata2) // 2)
-            x = str((points[0][0] + points[2][0]) / 2)
-            y = str((points[0][1] + points[2][1]) / 2)
-            w = str((max(points[2][0], points[0][0]) - min(points[2][0], points[0][0])) )
-            h = str((max(points[0][1], points[2][1]) - min(points[0][1], points[2][1])) )
+            x = str((points[0][0] + points[3][0]) / 2)
+            y = str((points[0][1] + points[3][1]) / 2)
+            w = str((max(points[3][0], points[0][0]) - min(points[3][0], points[0][0])) )
+            h = str((max(points[0][1], points[3][1]) - min(points[0][1], points[3][1])) )
             box = [x, y, w, h]
             point1 = tempdata1[1:3]
             point2 = tempdata1[3:5]
