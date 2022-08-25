@@ -75,8 +75,8 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
             tempdata1 = line.split()
             tempdata2 = np.array([float(x) for x in tempdata1[1:]])
             points = np.split(tempdata2, len(tempdata2) // 2)
-            line1=[points[0][0],points[0][1],points[3][0],points[3][1]]
-            line2 = [points[1][0], points[1][1], points[2][0], points[2][1]]
+            line1=[points[0][0],points[0][1],points[2][0],points[2][1]]
+            line2 = [points[1][0], points[1][1], points[3][0], points[3][1]]
             x,y=cross_point(line1,line2)
             x=str(x)
             y=str(y)
