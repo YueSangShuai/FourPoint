@@ -4,6 +4,7 @@ import cv2
 import numpy as np
 import torch
 
+
 def before_guiyi(x, w, h):
     y = x.clone() if isinstance(x, torch.Tensor) else np.copy(x)
     y[0] = int(w * x[0])
@@ -12,9 +13,8 @@ def before_guiyi(x, w, h):
     return y
 
 
-image_path = r'E:\Robotmaster\dataset\mydata\images\train\\'
-xml_path= r'E:\Robotmaster\kaiyuanzhuagnjiaban\2021-RMUC-SYHK-1021\labels\\'  # 数据原图路径
-
+image_path = r'E:\Robotmaster\2021-RMUC-0417-0916\images\\'
+xml_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'  # 数据原图路径
 
 image_lst = os.listdir(image_path)
 xml_lst = os.listdir(xml_path)
@@ -28,14 +28,14 @@ for img in image_lst:
     img = img.split('.')
     img_filename.append(img[0])
 
-h=1920
-w=1080
-
 for xml in xml_filename:
-    xmlfilename=xml_path+"%s.txt"%xml
-    imgfilename = image_path+"%s.png" % xml
-    img=cv2.imread(imgfilename)
-    f=open(xmlfilename)
+
+    xmlfilename = xml_path + "%s.txt" % xml
+    imgfilename = image_path + "%s.jpg" % xml
+    img = cv2.imread(imgfilename)
+    w = img.shape[0]
+    h = img.shape[1]
+    f = open(xmlfilename)
     dataset = f.readlines()
     for lines in dataset:
         temp = lines.split()
@@ -45,9 +45,14 @@ for xml in xml_filename:
         points = np.split(_temp, len(_temp) // 2)
 
         print(points)
-        cv2.circle(img, before_guiyi(points[1], h, w), 5, (255, 0, 255))
-
+        # cv2.circle(img, before_guiyi(points[1], h, w), 5, (255, 0, 255))
+    temp_rect_center = before_guiyi(np.array([float(x) for x in temp[0:2]]), w, h)
+    temp_rect_wh = before_guiyi(np.array([float(x) for x in temp[0:2]]), w, h)
+    x1=temp_rect_center[0]-temp_rect_wh[0]
+    y1=temp_rect_center[1]+temp_rect_wh[1]
+    x2=temp_rect_center[0]+temp_rect_wh[0]
+    y3=temp_rect_center[1]-temp_rect_wh[1]
+    cv2.rectangle(img,)
     cv2.imshow(xml, img)
     cv2.waitKey(1500)
-    cv2.destroyAllWindows ()
-
+    cv2.destroyAllWindows()

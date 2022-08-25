@@ -27,6 +27,14 @@ def before_guiyi(x, w, h):
     return y
 
 
+def after_guiyi(x, w, h):
+    y = x.clone() if isinstance(x, torch.Tensor) else np.copy(x)
+    y[0] = w / x[0]
+    y[1] = h / x[1]
+    y = y.astype(np.int64)
+    return y
+
+
 def changelabel(label_path, imwrite_path, innumber, outnumber):
     files = os.listdir(label_path)
     dict = count(label_path)
@@ -42,8 +50,8 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
             points = np.split(tempdata2, len(tempdata2) // 2)
             x = str((points[0][0] + points[2][0]) / 2)
             y = str((points[0][1] + points[2][1]) / 2)
-            w = str((max(points[2][0], points[0][0]) - min(points[2][0], points[0][0])) / 2)
-            h = str((max(points[0][1], points[2][1]) - min(points[0][1], points[2][1])) / 2)
+            w = str((max(points[2][0], points[0][0]) - min(points[2][0], points[0][0])) )
+            h = str((max(points[0][1], points[2][1]) - min(points[0][1], points[2][1])) )
             box = [x, y, w, h]
             point1 = tempdata1[1:3]
             point2 = tempdata1[3:5]
@@ -53,7 +61,7 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
             # save.append(save_data)
             for cls in dict:
                 if cls[0] == int(tempdata1[0]):
-                    save_data = [str(cls[1])] + box + point1 + point4 + point3 + point2+[str(-1),str(-1)]
+                    save_data = [str(cls[1])] + box + point1 + point4 + point3 + point2 + [str(-1), str(-1)]
                     save.append(save_data)
         f.close()
         # save=sum(save, [])
@@ -67,33 +75,34 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
         save = []
 
 
-# image_path = r'..\dataset\test\images/'
-label_path = r'E:\Robotmaster\2021-RMUC-0417-0916\txt\\'
-imwrite_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'
-changelabel(label_path, imwrite_path, 1, 1)
+if __name__ == '__main__':
+    # image_path = r'..\dataset\test\images/'
+    label_path = r'E:\Robotmaster\2021-RMUC-0417-0916\txt\\'
+    imwrite_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'
+    changelabel(label_path, imwrite_path, 1, 1)
 
-# img_PIL = cv2.imread(r'E:\Robotmaster\dataset\mydata\images\train\9.jpg')
-# f = open(r'E:\Robotmaster\dataset\mydata\labels\train\9.txt', 'r')
-# h = 720
-# w = 360
-#
-# dataset = f.readlines()
-# for lines in dataset:
-#     temp = lines.split()
-#
-#     _temp = np.array([float(x) for x in temp[1:]])
-#
-#     points = np.split(_temp, len(_temp) // 2)
-#
-#     print(points)
-#
-#     x, y = before_guiyi(points[0], h, w)
-#     w1, h1 = before_guiyi(points[1], h, w)
-#
-#     cv2.circle(img_PIL, (x, y), 1, (255, 0, 255))
-#     rect = cv2.rectangle(img_PIL, (x - w1, y + h1), (x + w1, y - h1), (255, 0, 255))
-# #     x1, y1, w, h = rect
-# #     print(x1, y1, w, h)
-# #
-# cv2.imshow("src", img_PIL)
-# cv2.waitKey(0)
+    # img_PIL = cv2.imread(r'E:\Robotmaster\dataset\mydata\images\train\9.jpg')
+    # f = open(r'E:\Robotmaster\dataset\mydata\labels\train\9.txt', 'r')
+    # h = 720
+    # w = 360
+    #
+    # dataset = f.readlines()
+    # for lines in dataset:
+    #     temp = lines.split()
+    #
+    #     _temp = np.array([float(x) for x in temp[1:]])
+    #
+    #     points = np.split(_temp, len(_temp) // 2)
+    #
+    #     print(points)
+    #
+    #     x, y = before_guiyi(points[0], h, w)
+    #     w1, h1 = before_guiyi(points[1], h, w)
+    #
+    #     cv2.circle(img_PIL, (x, y), 1, (255, 0, 255))
+    #     rect = cv2.rectangle(img_PIL, (x - w1, y + h1), (x + w1, y - h1), (255, 0, 255))
+    # #     x1, y1, w, h = rect
+    # #     print(x1, y1, w, h)
+    # #
+    # cv2.imshow("src", img_PIL)
+    # cv2.waitKey(0)

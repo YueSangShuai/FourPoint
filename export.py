@@ -27,10 +27,10 @@ if __name__ == '__main__':
     parser.add_argument('--dynamic', action='store_true', default=False, help='enable dynamic axis in onnx model')
     parser.add_argument('--onnx2pb', action='store_true', default=False, help='export onnx to pb')
     parser.add_argument('--onnx_infer', action='store_true', default=True, help='onnx infer test')
-    #=======================TensorRT=================================
+    # =======================TensorRT=================================
     parser.add_argument('--onnx2trt', action='store_true', default=False, help='export onnx to tensorrt')
     parser.add_argument('--fp16_trt', action='store_true', default=False, help='fp16 infer')
-    #================================================================
+    # ================================================================
     opt = parser.parse_args()
     opt.img_size *= 2 if len(opt.img_size) == 1 else 1  # expand
     print(opt)
@@ -40,7 +40,7 @@ if __name__ == '__main__':
     # Load PyTorch model
     model = attempt_load(opt.weights, map_location=torch.device('cpu'))  # load FP32 model
     delattr(model.model[-1], 'anchor_grid')
-    model.model[-1].anchor_grid=[torch.zeros(1)] * 3 # nl=3 number of detection layers
+    model.model[-1].anchor_grid = [torch.zeros(1)] * 3  # nl=3 number of detection layers
     model.model[-1].export_cat = True
     model.eval()
     labels = model.names
@@ -62,7 +62,7 @@ if __name__ == '__main__':
                 m.act = SiLU()
         # elif isinstance(m, models.yolo.Detect):
         #     m.forward = m.forward_export  # assign forward (optional)
-        if isinstance(m, models.common.ShuffleV2Block):#shufflenet block nn.SiLU
+        if isinstance(m, models.common.ShuffleV2Block):  # shufflenet block nn.SiLU
             for i in range(len(m.branch1)):
                 if isinstance(m.branch1[i], nn.SiLU):
                     m.branch1[i] = SiLU()
@@ -75,14 +75,14 @@ if __name__ == '__main__':
     print('\nStarting ONNX export with onnx %s...' % onnx.__version__)
     f = opt.weights.replace('.pt', '.onnx')  # filename
     model.fuse()  # only for ONNX
-    input_names=['input']
-    output_names=['output']
-    torch.onnx.export(model, img, f, verbose=False, opset_version=12, 
-        input_names=input_names,
-        output_names=output_names,
-        dynamic_axes = {'input': {0: 'batch'},
-                        'output': {0: 'batch'}
-                        } if opt.dynamic else None)
+    input_names = ['input']
+    output_names = ['output']
+    torch.onnx.export(model, img, f, verbose=False, opset_version=12,
+                      input_names=input_names,
+                      output_names=output_names,
+                      dynamic_axes={'input': {0: 'batch'},
+                                    'output': {0: 'batch'}
+                                    } if opt.dynamic else None)
 
     # Checks
     onnx_model = onnx.load(f)  # load onnx model
@@ -91,24 +91,24 @@ if __name__ == '__main__':
     # Finish
     print('\nExport complete (%.2fs). Visualize with https://github.com/lutzroeder/netron.' % (time.time() - t))
 
-
     # onnx infer
     if opt.onnx_infer:
         import onnxruntime
         import numpy as np
-        providers =  ['CPUExecutionProvider']
-        session = onnxruntime.InferenceSession(f, providers=providers)
-        im = img.cpu().numpy().astype(np.float32) # torch to numpy
-        y_onnx = session.run([session.get_outputs()[0].name], {session.get_inputs()[0].name: im})[0]
-        print("pred's shape is ",y_onnx.shape)
-        print("max(|torch_pred - onnx_pred|） =",abs(y.cpu().numpy()-y_onnx).max())
 
+        providers = ['CPUExecutionProvider']
+        session = onnxruntime.InferenceSession(f, providers=providers)
+        im = img.cpu().numpy().astype(np.float32)  # torch to numpy
+        y_onnx = session.run([session.get_outputs()[0].name], {session.get_inputs()[0].name: im})[0]
+        print("pred's shape is ", y_onnx.shape)
+        print("max(|torch_pred - onnx_pred|） =", abs(y.cpu().numpy() - y_onnx).max())
 
     # TensorRT export
     if opt.onnx2trt:
         from torch2trt.trt_model import ONNX_to_TRT
+
         print('\nStarting TensorRT...')
-        ONNX_to_TRT(onnx_model_path=f,trt_engine_path=f.replace('.onnx', '.trt'),fp16_mode=opt.fp16_trt)
+        ONNX_to_TRT(onnx_model_path=f, trt_engine_path=f.replace('.onnx', '.trt'), fp16_mode=opt.fp16_trt)
 
     # PB export
     if opt.onnx2pb:
@@ -121,7 +121,7 @@ if __name__ == '__main__':
         tf_rep = prepare(onnx_model, strict=False)  # prepare tf representation
         tf_rep.export_graph(outpb)  # export the model
 
-        out_onnx = tf_rep.run(img) # onnx output
+        out_onnx = tf_rep.run(img)  # onnx output
 
         # check pb
         with tf.Graph().as_default():
@@ -131,10 +131,10 @@ if __name__ == '__main__':
                 tf.import_graph_def(graph_def, name="")
             with tf.Session() as sess:
                 init = tf.global_variables_initializer()
-                input_x = sess.graph.get_tensor_by_name(input_names[0]+':0')  # input
+                input_x = sess.graph.get_tensor_by_name(input_names[0] + ':0')  # input
                 outputs = []
                 for i in output_names:
-                    outputs.append(sess.graph.get_tensor_by_name(i+':0'))
+                    outputs.append(sess.graph.get_tensor_by_name(i + ':0'))
                 out_pb = sess.run(outputs, feed_dict={input_x: img})
 
         print(f'out_pytorch {y}')

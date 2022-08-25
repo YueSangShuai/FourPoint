@@ -60,11 +60,16 @@ def show_results(img, xyxy, conf, landmarks, class_num):
     clors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255)]
 
     for i in range(5):
-        if i==2:
+        if i == 2:
             continue
         point_x = int(landmarks[2 * i])
         point_y = int(landmarks[2 * i + 1])
-        cv2.circle(img, (point_x, point_y), tl + 1, clors[i], -1)
+
+        if i < 2:
+            point2_x = int(landmarks[2 * (i + 2)])
+            point2_y = int(landmarks[2 * (i + 2) + 1])
+            cv2.line(img, (point_x, point_y), (point2_x, point2_y),  (255, 0, 255), 4,3)
+        cv2.circle(img, (point_x, point_y), 5, clors[i], -1)
 
     tf = max(tl - 1, 1)  # font thickness
     label = str(int(class_num)) + ': ' + str(conf)[:5]
@@ -206,13 +211,13 @@ def detect_video(model, image, device, image_size, conf_thres, iou_thres):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str,
-                        default=r'runs/train/exp/weights/best.pt',
+                        default=r'runs/train/RM3/weights/best.pt',
                         help='model.pt path(s)')
-    parser.add_argument('--image', type=str, default=r"E:\Robotmaster\rm\images\12.jpg",
+    parser.add_argument('--image', type=str, default=r"E:\Robotmaster\rmdata\train\images\515.jpg",
                         help='source')  # file/folder, 0 for webcam
     parser.add_argument('--img_size', type=int, default=640, help='inference size (pixels)')
-    parser.add_argument('--video', action='store_false', default=r"C:\Users\59781\Desktop\1.mp4", help='using video')
-    parser.add_argument('--conf_thres', type=float, default=0.3, help='')
+    parser.add_argument('--video', default=r"C:\Users\59781\Desktop\1.mp4", help='using video')
+    parser.add_argument('--conf_thres', type=float, default=0.5, help='')
     parser.add_argument('--iou_thres', type=float, default=0.5, help='')
 
     opt = parser.parse_args()
@@ -227,10 +232,9 @@ if __name__ == '__main__':
         width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))  # 宽高
         out = cv2.VideoWriter('result.mp4', fourcc, fps, (width, height))  # 写入视频
         while cap.isOpened():
-
             ret, frame = cap.read()
             out.write(frame)  # 写入帧
-            detect_video(model,frame,device,opt.img_size,opt.conf_thres,opt.iou_thres)
+            detect_video(model, frame, device, opt.img_size, opt.conf_thres, opt.iou_thres)
 
         cap.release()
         out.release()
