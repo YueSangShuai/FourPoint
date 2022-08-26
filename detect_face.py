@@ -55,7 +55,7 @@ def show_results(img, xyxy, conf, landmarks, class_num):
     y1 = int(xyxy[1])
     x2 = int(xyxy[2])
     y2 = int(xyxy[3])
-    # cv2.rectangle(img, (x1,y1), (x2, y2), (0,255,0), thickness=tl, lineType=cv2.LINE_AA)
+    cv2.rectangle(img, (x1,y1), (x2, y2), (0,255,0), thickness=tl, lineType=cv2.LINE_AA)
 
     clors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255)]
 
@@ -203,22 +203,23 @@ def detect_video(model, image, device, image_size, conf_thres, iou_thres):
     loop_time = cv2.getTickCount() - loop_start
     total_time = loop_time / (cv2.getTickFrequency())  # 使用getTickFrequency()更加准确
     running_FPS = int(1 / total_time)  # 帧率取整
-    cv2.putText(orgimg, str(running_FPS), (50, 300), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 2)
+    cv2.putText(orgimg, str(running_FPS), (50, 300), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 5)
     cv2.imshow('result.jpg', orgimg)
     cv2.waitKey(10)
+    return orgimg
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str,
-                        default=r'runs/train/RM/weights/best.pt',
+                        default=r'runs/train/exp/weights/best.pt',
                         help='model.pt path(s)')
     parser.add_argument('--image', type=str, default=r"E:\Robotmaster\rmdata\train\images\515.jpg",
                         help='source')  # file/folder, 0 for webcam
     parser.add_argument('--img_size', type=int, default=640, help='inference size (pixels)')
-    parser.add_argument('--video', default=r"C:\Users\59781\Desktop\dataset\video\video\c2bc1b4444783bb5c1027a564b59f88d.mp4", help='using video')
-    parser.add_argument('--conf_thres', type=float, default=0.3, help='')
-    parser.add_argument('--iou_thres', type=float, default=0.3, help='')
+    parser.add_argument('--video', default=r"C:\Users\59781\Desktop\dataset\video\video\3.mp4", help='using video')
+    parser.add_argument('--conf_thres', type=float, default=0.5, help='')
+    parser.add_argument('--iou_thres', type=float, default=0.5, help='')
 
     opt = parser.parse_args()
     print(opt)
@@ -233,8 +234,9 @@ if __name__ == '__main__':
         out = cv2.VideoWriter('result.mp4', fourcc, fps, (width, height))  # 写入视频
         while cap.isOpened():
             ret, frame = cap.read()
-            out.write(frame)  # 写入帧
-            detect_video(model, frame, device, opt.img_size, opt.conf_thres, opt.iou_thres)
+
+            write_frame=detect_video(model, frame, device, opt.img_size, opt.conf_thres, opt.iou_thres)
+            out.write(write_frame)  # 写入帧
 
         cap.release()
         out.release()

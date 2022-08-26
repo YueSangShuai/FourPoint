@@ -82,7 +82,7 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
             y=str(y)
             # x = str((points[0][0] + points[2][0]) / 2)
             # y = str((points[0][1] + points[2][1]) / 2)
-            w = str((max(points[2][0], points[1][0]) - min(points[2][0], points[1][0]))*1.5)
+            w = str((max(points[0][0], points[2][0]) - min(points[0][0], points[2][0]))*1.5)
             h = str((max(points[1][1], points[2][1]) - min(points[1][1], points[2][1])))
 
 

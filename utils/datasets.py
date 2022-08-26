@@ -603,6 +603,19 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
 def load_image(self, index):
     # loads 1 image from dataset, returns img, original hw, resized hw
     img = self.imgs[index]
+    if self.hyp.albumentations == 1:
+        import albumentations as A
+        aug = A.Compose([
+            A.OpticalDistortion(),  # 光学畸变
+            # A.GridDistortion(),  # 网格畸变
+            # A.CLAHE(),  # 对比度受限直方图均衡
+            # A.Blur(blur_limit=15),        # # 模糊
+            A.MotionBlur(blur_limit=self.hyp['blur_limit'], p=self.hyp['p']),  # 运动模糊
+            # A.MedianBlur(blur_limit=15),#中心模糊
+            # A.GaussianBlur(blur_limit=15),#高斯模糊
+        ])
+        img = aug(image=img)['image']
+        cv2.imshow('aaa.jpg', img)
     if img is None:  # not cached
         path = self.img_files[index]
         img = cv2.imread(path)  # BGR
@@ -612,17 +625,6 @@ def load_image(self, index):
         if r != 1:  # always resize down, only resize up if training with augmentation
             interp = cv2.INTER_AREA if r < 1 and not self.augment else cv2.INTER_LINEAR
             img = cv2.resize(img, (int(w0 * r), int(h0 * r)), interpolation=interp)
-            # import albumentations as A
-            # aug = A.Compose([
-            #     A.OpticalDistortion(),  # 光学畸变
-            #     # A.GridDistortion(),  # 网格畸变
-            #     # A.CLAHE(),  # 对比度受限直方图均衡
-            #     # A.Blur(blur_limit=15),        # # 模糊
-            #     A.MotionBlur(blur_limit=self.hyp['blur_limit'], p=self.hyp['p']),  # 运动模糊
-            #     # A.MedianBlur(blur_limit=15),#中心模糊
-            #     # A.GaussianBlur(blur_limit=15),#高斯模糊
-            # ])
-            # img = aug(image=img)['image']
         return img, (h0, w0), img.shape[:2]  # img, hw_original, hw_resized
     else:
         return self.imgs[index], self.img_hw0[index], self.img_hw[index]  # img, hw_original, hw_resized
@@ -697,6 +699,8 @@ def load_mosaic(self, index):
                                        shear=self.hyp['shear'],
                                        perspective=self.hyp['perspective'],
                                        border=self.mosaic_border)  # border to remove
+    # 增加自己的数据增强
+
 
     return img4, labels4
 
@@ -767,6 +771,7 @@ def load_mosaic9(self, index):
                                        shear=self.hyp['shear'],
                                        perspective=self.hyp['perspective'],
                                        border=self.mosaic_border)  # border to remove
+    # 增加自己的数据增强
 
     return img9, labels9
 
