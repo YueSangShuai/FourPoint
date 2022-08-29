@@ -699,8 +699,6 @@ def load_mosaic(self, index):
                                        shear=self.hyp['shear'],
                                        perspective=self.hyp['perspective'],
                                        border=self.mosaic_border)  # border to remove
-    # 增加自己的数据增强
-
 
     return img4, labels4
 
@@ -771,7 +769,6 @@ def load_mosaic9(self, index):
                                        shear=self.hyp['shear'],
                                        perspective=self.hyp['perspective'],
                                        border=self.mosaic_border)  # border to remove
-    # 增加自己的数据增强
 
     return img9, labels9
 

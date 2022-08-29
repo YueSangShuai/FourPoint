@@ -10,9 +10,9 @@ weight_decay: 0.0005  # optimizer weight decay 5e-4
 warmup_epochs: 3.0  # warmup epochs (fractions ok)
 warmup_momentum: 0.8  # warmup initial momentum
 warmup_bias_lr: 0.1  # warmup initial bias lr
-box: 0.005  # box loss gain
+box: 0.04  # box loss gain
 cls: 0.5  # cls loss gain
-landmark: 0.05 # landmark loss gain
+landmark: 0.01 # landmark loss gain
 cls_pw: 1.0  # cls BCELoss positive_weight
 obj: 1.0  # obj loss gain (scale with pixels)
 obj_pw: 1.0  # obj BCELoss positive_weight
@@ -33,5 +33,6 @@ fliplr: 0.5  # 左右反转
 mosaic: 0.5  # 发生马赛克的概率 (probability)
 mixup: 0.0  # image mixup (probability)
 
+albumentations: 1 #是否开启图像增强1为开启0为关闭
 blur_limit: [0, 25] #运动模糊的概率
 p: 1 #运动模糊的概率

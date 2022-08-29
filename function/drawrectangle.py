@@ -118,8 +118,8 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
 
 if __name__ == '__main__':
     # image_path = r'..\dataset\test\images/'
-    label_path = r'C:\Users\59781\Desktop\dataset\mydata\train\txt\\'
-    imwrite_path = r'C:\Users\59781\Desktop\dataset\mydata\train\labels\\'
+    label_path = r'E:\Robotmaster\2021-RMUC-0417-0916\txt\\'
+    imwrite_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'
     changelabel(label_path, imwrite_path, 1, 1)
 
     # img_PIL = cv2.imread(r'E:\Robotmaster\dataset\mydata\images\train\9.jpg')
