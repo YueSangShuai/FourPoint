@@ -461,6 +461,7 @@ if __name__ == '__main__':
     parser.add_argument('--close_window', action='store_true', help='是否关机')
     opt = parser.parse_args()
 
+
     # Set DDP variables
     opt.total_batch_size = opt.batch_size
     opt.world_size = int(os.environ['WORLD_SIZE']) if 'WORLD_SIZE' in os.environ else 1
