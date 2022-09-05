@@ -143,8 +143,8 @@ def detect_one(model, image_path, device):
 
 
 def detect_video(model, image, device, image_size, conf_thres, iou_thres):
-    from cv2 import getTickCount, getTickFrequency
-    loop_start = getTickCount()
+
+    loop_start = time.time()
     # Load model
     img_size = image_size
     conf_thres = conf_thres
@@ -202,10 +202,11 @@ def detect_video(model, image, device, image_size, conf_thres, iou_thres):
                 landmarks = det[j, 5:15].view(-1).tolist()
                 class_num = det[j, 15].cpu().numpy()
                 orgimg = show_results(orgimg, xyxy, conf, landmarks, class_num)
-    loop_time = cv2.getTickCount() - loop_start
-    total_time = loop_time / (cv2.getTickFrequency())  # 使用getTickFrequency()更加准确
+
+    loop_end = time.time()
+    total_time = loop_end - loop_start
     running_FPS = int(1 / total_time)  # 帧率取整
-    cv2.putText(orgimg, str(running_FPS), (50, 300), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 5)
+    cv2.putText(orgimg, str(running_FPS), (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 5)
     cv2.imshow('result.jpg', orgimg)
     cv2.waitKey(10)
     return orgimg
@@ -219,7 +220,7 @@ if __name__ == '__main__':
     parser.add_argument('--image', type=str, default=r"/media/yuesang/G/Robotmaster/dataset/data/images/train/0dd119c24d073325871696e372069ea6.jpg",
                         help='source')  # file/folder, 0 for webcam
     parser.add_argument('--img_size', type=int, default=640, help='inference size (pixels)')
-    parser.add_argument('--video', default=False, help='using video')
+    parser.add_argument('--video', default=r"/media/yuesang/G/Robotmaster/dataset/video/video/2.mp4", help='using video')
     parser.add_argument('--conf_thres', type=float, default=0.5, help='')
     parser.add_argument('--iou_thres', type=float, default=0.5, help='')
 
@@ -230,18 +231,12 @@ if __name__ == '__main__':
     if opt.video:
 
         cap = cv2.VideoCapture(opt.video)
-        fourcc = cv2.VideoWriter_fourcc(*'MP4V')  # 视频编解码器
-        fps = cap.get(cv2.CAP_PROP_FPS)  # 帧数
-        width, height = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))  # 宽高
-        out = cv2.VideoWriter('result.mp4', fourcc, fps, (width, height))  # 写入视频
         while cap.isOpened():
             ret, frame = cap.read()
 
             write_frame=detect_video(model, frame, device, opt.img_size, opt.conf_thres, opt.iou_thres)
-            out.write(write_frame)  # 写入帧
 
         cap.release()
-        out.release()
         cv2.destroyAllWindows()
     else:
         detect_one(model, opt.image, device)

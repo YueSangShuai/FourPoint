@@ -25,8 +25,8 @@ def run(model,img,warmup_iter,iter):
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--torch_path', type=str,required=True, help='torch weights path')  
-    parser.add_argument('--trt_path', type=str,required=True, help='tensorrt weights path')
+    parser.add_argument('--torch_path', type=str,default=r"/home/yuesang/Project/PycharmProjects/FourPoint/runs/train/exp5/weights/best.pt", help='torch weights path')
+    parser.add_argument('--trt_path', type=str,default=r"/home/yuesang/Project/PycharmProjects/FourPoint/runs/train/exp5/weights/best.trt", help='tensorrt weights path')
 
     parser.add_argument('--device', type=int,default=0, help='cuda device')
     parser.add_argument('--img_shape', type=list,default=[1,3,640,640], help='tensorrt weights path')
