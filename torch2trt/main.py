@@ -70,24 +70,50 @@ def img_vis(img, orgimg, pred, vis_thres=0.6):
                     no_vis_nums += 1
                     continue
 
-                xywh = (xyxy2xywh(det[j, :4].view(1, 4)) / gn).view(-1).tolist()
+                xyxy = det[j, :4].view(-1).tolist()
                 conf = det[j, 4].cpu().numpy()
-                landmarks = (det[j, 5:15].view(1, 10) / gn_lks).view(-1).tolist()
+                landmarks = det[j, 5:15].view(-1).tolist()
                 class_num = det[j, 15].cpu().numpy()
-                orgimg = show_results(orgimg, xywh, conf, landmarks, class_num)
-
+                orgimg = show_results(orgimg, xyxy, conf, landmarks, class_num)
 
     cv2.imshow('result', orgimg)
-    cv2.waitKey(0)
-    print('result save in ' + cur_path + '/result.jpg')
+
+
+def video_process(img, long_side=640, stride_max=32):
+    '''
+    图像预处理
+    '''
+    orgimg = copy.deepcopy(img)
+    img0 = copy.deepcopy(orgimg)
+    h0, w0 = orgimg.shape[:2]  # orig hw
+    r = long_side / max(h0, w0)  # resize image to img_size
+    if r != 1:  # always resize down, only resize up if training with augmentation
+        interp = cv2.INTER_AREA if r < 1 else cv2.INTER_LINEAR
+        img0 = cv2.resize(img0, (int(w0 * r), int(h0 * r)), interpolation=interp)
+
+    imgsz = check_img_size(long_side, s=stride_max)  # check img_size
+
+    img = letterbox(img0, new_shape=imgsz, auto=False)[0]  # auto True最小矩形   False固定尺度
+    # Convert
+    img = img[:, :, ::-1].transpose(2, 0, 1).copy()  # BGR to RGB, to 3x416x416
+    img = torch.from_numpy(img)
+    img = img.float()  # uint8 to fp16/32
+    img /= 255.0  # 0 - 255 to 0.0 - 1.0
+    if img.ndimension() == 3:
+        img = img.unsqueeze(0)
+    return img, orgimg
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--img_path', type=str, default=r"E:\Robotmaster\rmdata\train\images\515.jpg", help='img path')
+    parser.add_argument('--img_path', type=str,
+                        default=r"/media/yuesang/G/Robotmaster/dataset/data/images/train/0dd119c24d073325871696e372069ea6.jpg",
+                        help='img path')
     parser.add_argument('--trt_path', type=str, required=True, help='trt_path')
-    parser.add_argument('--output_shape', type=list, default=[1, 25200, 36],
+    parser.add_argument('--output_shape', type=list, default=[1, 25200, 19],
                         help='input[1,3,640,640] ->  output[1,25200,16]')
+    parser.add_argument('--video', default=r"/media/yuesang/G/Robotmaster/dataset/video/video/2.mp4",
+                        help='using video')
     parser.add_argument('--conf_thres', type=float, default=0.5, help='')
     parser.add_argument('--iou_thres', type=float, default=0.5, help='')
     opt = parser.parse_args()
@@ -100,5 +126,17 @@ if __name__ == '__main__':
     # Apply NMS
     pred = non_max_suppression_face(torch.from_numpy(pred), opt.conf_thres, opt.iou_thres)
 
-    # ============可视化================
-    img_vis(img, orgimg, pred)
+    if opt.video:
+        cap = cv2.VideoCapture(opt.video)
+        while cap.isOpened():
+            ret, frame = cap.read()
+
+            video_frame, video_origin = video_process(frame)
+            img_vis(video_frame, video_origin, pred)
+            cv2.waitKey(10)
+        cap.release()
+        cv2.destroyAllWindows()
+    else:
+        # ============可视化================
+        img_vis(img, orgimg, pred)
+        cv2.waitKey(1500)

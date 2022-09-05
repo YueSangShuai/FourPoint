@@ -57,6 +57,7 @@ def show_results(img, xyxy, conf, landmarks, class_num):
     y2 = int(xyxy[3])
     cv2.rectangle(img, (x1,y1), (x2, y2), (0,255,0), thickness=tl, lineType=cv2.LINE_AA)
 
+
     clors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255)]
 
     for i in range(5):
@@ -137,7 +138,8 @@ def detect_one(model, image_path, device):
                 class_num = det[j, 15].cpu().numpy()
                 orgimg = show_results(orgimg, xyxy, conf, landmarks, class_num)
 
-    cv2.imwrite('result.jpg', orgimg)
+    cv2.imshow('result.jpg', orgimg)
+    cv2.waitKey(0)
 
 
 def detect_video(model, image, device, image_size, conf_thres, iou_thres):
@@ -212,12 +214,12 @@ def detect_video(model, image, device, image_size, conf_thres, iou_thres):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str,
-                        default=r'runs/train/exp/weights/best.pt',
+                        default=r'runs/train/exp5/weights/best.pt',
                         help='model.pt path(s)')
-    parser.add_argument('--image', type=str, default=r"E:\Robotmaster\rmdata\train\images\515.jpg",
+    parser.add_argument('--image', type=str, default=r"/media/yuesang/G/Robotmaster/dataset/data/images/train/0dd119c24d073325871696e372069ea6.jpg",
                         help='source')  # file/folder, 0 for webcam
     parser.add_argument('--img_size', type=int, default=640, help='inference size (pixels)')
-    parser.add_argument('--video', default=r"C:\Users\59781\Desktop\dataset\video\video\3.mp4", help='using video')
+    parser.add_argument('--video', default=False, help='using video')
     parser.add_argument('--conf_thres', type=float, default=0.5, help='')
     parser.add_argument('--iou_thres', type=float, default=0.5, help='')
 
