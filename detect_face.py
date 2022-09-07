@@ -208,7 +208,7 @@ def detect_video(model, image, device, image_size, conf_thres, iou_thres):
     running_FPS = int(1 / total_time)  # 帧率取整
     cv2.putText(orgimg, str(running_FPS), (0, 30), cv2.FONT_HERSHEY_SIMPLEX, 1.2, (255, 255, 255), 5)
     cv2.imshow('result.jpg', orgimg)
-    cv2.waitKey(10)
+    cv2.waitKey(1)
     return orgimg
 
 
@@ -220,7 +220,7 @@ if __name__ == '__main__':
     parser.add_argument('--image', type=str, default=r"/media/yuesang/G/Robotmaster/dataset/data/images/train/0dd119c24d073325871696e372069ea6.jpg",
                         help='source')  # file/folder, 0 for webcam
     parser.add_argument('--img_size', type=int, default=640, help='inference size (pixels)')
-    parser.add_argument('--video', default=r"/media/yuesang/G/Robotmaster/dataset/video/video/2.mp4", help='using video')
+    parser.add_argument('--video', default=r"/media/yuesang/G/Robotmaster/dataset/video/video/3.mp4", help='using video')
     parser.add_argument('--conf_thres', type=float, default=0.5, help='')
     parser.add_argument('--iou_thres', type=float, default=0.5, help='')
 

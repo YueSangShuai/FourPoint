@@ -80,8 +80,6 @@ def img_vis(img, orgimg, pred, vis_thres=0.6):
     no_vis_nums = 0
     # Process detections
     for i, det in enumerate(pred):  # detections per image
-        gn = torch.tensor(orgimg.shape)[[1, 0, 1, 0]]  # normalization gain whwh
-        gn_lks = torch.tensor(orgimg.shape)[[1, 0, 1, 0, 1, 0, 1, 0, 1, 0]]  # normalization gain landmarks
         if len(det):
             # Rescale boxes from img_size to im0 size
             det[:, :4] = scale_coords(img.shape[2:], det[:, :4], orgimg.shape).round()

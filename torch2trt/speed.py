@@ -30,8 +30,8 @@ if __name__ == '__main__':
 
     parser.add_argument('--device', type=int,default=0, help='cuda device')
     parser.add_argument('--img_shape', type=list,default=[1,3,640,640], help='tensorrt weights path')
-    parser.add_argument('--warmup_iter', type=int, default=100,help='warm up iter')  
-    parser.add_argument('--iter', type=int, default=300,help='average elapsed time of iterations')  
+    parser.add_argument('--warmup_iter', type=int, default=100,help='warm up iter')
+    parser.add_argument('--iter', type=int, default=300,help='average elapsed time of iterations')
     opt = parser.parse_args()
 
 
