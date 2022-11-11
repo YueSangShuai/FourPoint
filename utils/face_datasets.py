@@ -19,6 +19,7 @@ from tqdm import tqdm
 
 from utils.general import xyxy2xywh, xywh2xyxy, clean_str
 from utils.torch_utils import torch_distributed_zero_first
+from utils.datastrong import Albumentations
 
 # Parameters
 help_url = 'https://github.com/ultralytics/yolov5/wiki/Train-Custom-Data'
@@ -132,6 +133,7 @@ class LoadFaceImagesAndLabels(Dataset):  # for training/testing
         self.mosaic = self.augment and not self.rect  # load 4 images at a time into a mosaic (only during training)
         self.mosaic_border = [-img_size // 2, -img_size // 2]
         self.stride = stride
+        self.albumentations = Albumentations()
 
         try:
             f = []  # image files
@@ -365,6 +367,9 @@ class LoadFaceImagesAndLabels(Dataset):  # for training/testing
                                                      labels[:, [6, 8, 10, 12, 14]])
 
         if self.augment:
+            img, labels = self.albumentations(img, labels)
+            nl = len(labels)  # update after albumentations
+
             # flip up-down
             if random.random() < hyp['flipud']:
                 img = np.flipud(img)
