@@ -383,7 +383,9 @@ def non_max_suppression_face(prediction, conf_thres=0.25, iou_thres=0.45, classe
     """
 
     nc = prediction.shape[2] - 15  # number of classes
+
     xc = prediction[..., 4] > conf_thres  # candidates
+
 
     # Settings
     min_wh, max_wh = 2, 4096  # (pixels) minimum and maximum box width and height
@@ -392,11 +394,14 @@ def non_max_suppression_face(prediction, conf_thres=0.25, iou_thres=0.45, classe
     multi_label = nc > 1  # multiple labels per box (adds 0.5ms/img)
     merge = False  # use merge-NMS
 
+    temp1=prediction.shape
+
     t = time.time()
     output = [torch.zeros((0, 16), device=prediction.device)] * prediction.shape[0]
     for xi, x in enumerate(prediction):  # image index, image inference
         # Apply constraints
         # x[((x[..., 2:4] < min_wh) | (x[..., 2:4] > max_wh)).any(1), 4] = 0  # width-height
+        temp=xc[xi]
         x = x[xc[xi]]  # confidence
 
         # Cat apriori labels if autolabelling
@@ -458,7 +463,6 @@ def non_max_suppression_face(prediction, conf_thres=0.25, iou_thres=0.45, classe
 
 def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=None, agnostic=False, labels=()):
     """Performs Non-Maximum Suppression (NMS) on inference results
-
     Returns:
          detections with shape: nx6 (x1, y1, x2, y2, conf, cls)
     """

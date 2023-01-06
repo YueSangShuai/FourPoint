@@ -23,8 +23,8 @@ def before_guiyi(x, w, h):
     return y
 
 
-image_path = r'C:\Users\59781\Desktop\mydata\mydata\train\images\\'
-xml_path = r'C:\Users\59781\Desktop\mydata\mydata\train\labels\\'  # 数据原图路径
+image_path = r'/media/yuesang/G/Robotmaster/shangjiao/images/'
+xml_path = r'/media/yuesang/G/Robotmaster/shangjiao/labels/'  # 数据原图路径
 
 image_lst = os.listdir(image_path)
 xml_lst = os.listdir(xml_path)
@@ -53,10 +53,39 @@ for xml in xml_filename:
         _temp = np.array([float(x) for x in temp[1:]])
 
         points = np.split(_temp, len(_temp) // 2)
-        print(points[1])
+        message = ""
+        if temp[0] == "0":
+            message = "BlueOne"
+        elif temp[0] == "1":
+            message = "BlueTwo"
+        elif temp[0] == "2":
+            message = "BlueThree"
+        elif temp[0] == "3":
+            message = "BlueFour"
+
+        elif temp[0] == "4":
+            message = "RedOne"
+        elif temp[0] == "5":
+            message = "RedTwo"
+        elif temp[0] == "6":
+            message = "RedThree"
+        elif temp[0] == "7":
+            message = "RedFour"
+
+        elif temp[0] == "8":
+            message = "GrayOne"
+        elif temp[0] == "9":
+            message = "GrayTwo"
+        elif temp[0] == "10":
+            message = "GrayThree"
+        elif temp[0] == "11":
+            message = "GrayFour"
+
+        cv2.putText(img, message, before_guiyi(points[0], h, w), cv2.FONT_HERSHEY_SIMPLEX, 0.75, (0, 0, 255), 2)
         cv2.circle(img, before_guiyi(points[0], h, w), 5, (255, 0, 255))
         temp_rect = xywhn2xyxy(np.array([float(x) for x in temp[1:5]]), h, w)
-        cv2.rectangle(img, (int(temp_rect[0]), int(temp_rect[1])), (int(temp_rect[2]), int(temp_rect[3])), (255, 0, 255),2)
+        cv2.rectangle(img, (int(temp_rect[0]), int(temp_rect[1])), (int(temp_rect[2]), int(temp_rect[3])),
+                      (255, 0, 255), 2)
     cv2.imshow(xml, img)
-    cv2.waitKey(1500)
+    cv2.waitKey(100)
     cv2.destroyAllWindows()

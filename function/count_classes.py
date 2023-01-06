@@ -23,6 +23,6 @@ def count(label_path):
 
 
 if __name__ == '__main__':
-    label_path = r'C:\Users\59781\Desktop\mydata\mydata\train\labels\\'
+    label_path = r'/media/yuesang/G/Robotmaster/rmdata/labels/val/'
     print(count(label_path))
     print(len(count(label_path)))

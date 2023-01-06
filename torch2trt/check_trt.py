@@ -62,7 +62,7 @@ def check_trt(model_path, image_size):
         stream.synchronize()
 
         cuda.memcpy_dtoh(output_buffer, output_memory)
-    print("[Info] output_buffer: {}".format(output_buffer))
+    print("[Info] output_buffer: {}".format(output_buffer.shape))
 
 
 def parse_args():
@@ -70,7 +70,7 @@ def parse_args():
     处理脚本参数
     """
     parser = argparse.ArgumentParser(description='检查TRT模型')
-    parser.add_argument('-m', dest='model_path', default="/home/yuesang/Project/PycharmProjects/FourPoint/runs/train/exp5/weights/best.trt", help='TRT模型路径', type=str)
+    parser.add_argument('-m', dest='model_path', default="../runs/train/rm/weights/best2.trt", help='TRT模型路径', type=str)
     parser.add_argument('-s', dest='image_size', default=640, help='图像尺寸，如336', type=int)
 
     args = parser.parse_args()

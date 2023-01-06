@@ -64,8 +64,7 @@ def after_guiyi(x, w, h):
 
 def changelabel(label_path, imwrite_path, innumber, outnumber):
     files = os.listdir(label_path)
-    dict = count(label_path)
-    print(dict)
+
     for file in files:
         f = open(label_path + file)
         dataset = f.readlines()
@@ -75,28 +74,33 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
             tempdata1 = line.split()
             tempdata2 = np.array([float(x) for x in tempdata1[1:]])
             points = np.split(tempdata2, len(tempdata2) // 2)
-            line1=[points[0][0],points[0][1],points[2][0],points[2][1]]
+            line1 = [points[0][0], points[0][1], points[2][0], points[2][1]]
             line2 = [points[1][0], points[1][1], points[3][0], points[3][1]]
-            x,y=cross_point(line1,line2)
-            x=str(x)
-            y=str(y)
+            x, y = cross_point(line1, line2)
+            x = str(x)
+            y = str(y)
             # x = str((points[0][0] + points[2][0]) / 2)
             # y = str((points[0][1] + points[2][1]) / 2)
-            w = str((max(points[0][0], points[2][0]) - min(points[0][0], points[2][0]))*1.5)
+            w = str((max(points[0][0], points[2][0]) - min(points[0][0], points[2][0])) * 1.5)
             h = str((max(points[1][1], points[2][1]) - min(points[1][1], points[2][1])))
-
 
             box = [x, y, w, w]
             point1 = tempdata1[1:3]
             point2 = tempdata1[3:5]
             point3 = tempdata1[5:7]
             point4 = tempdata1[7:9]
-            # save_data = [str(0)] + box + tempdata1[1:]
-            # save.append(save_data)
-            for cls in dict:
-                if cls[0] == int(tempdata1[0]):
-                    save_data = [str(cls[1])] + box + point1 + point2 + point4 + point3 + [x, y]
-                    save.append(save_data)
+
+            point = [0, 0]
+            save_data = [str(tempdata1[0])] + box + tempdata1[1:]
+            # for i in range(13):
+            #     save_data += [str(point[0])]
+            #     save_data += [str(point[1])]
+            save.append(save_data)
+
+            # for cls in dict:
+            #     if cls[0] == int(tempdata1[0]):
+            #         save_data = [str(cls[1])] + box + point1 + point2 + point4 + point3 + [x, y]
+            #         save.append(save_data)
         f.close()
         # save=sum(save, [])
         f1 = open(imwrite_path + file, 'w')
@@ -108,18 +112,11 @@ def changelabel(label_path, imwrite_path, innumber, outnumber):
         f1.close()
         save = []
 
-    f = open('../classes.txt', 'w+')
-    for di in dict:
-        f.write('原先的类别：'+str(di[0])+' 转换后的类别:'+str(di[1])+'\n')
-    f.write('共记类别:'+str(len(dict)))
-    f.close()
-
-
 
 if __name__ == '__main__':
     # image_path = r'..\dataset\test\images/'
-    label_path = r'E:\Robotmaster\2021-RMUC-0417-0916\txt\\'
-    imwrite_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'
+    label_path = r'/media/yuesang/G/Robotmaster/dataset/data/labels/temp/'
+    imwrite_path = r'/media/yuesang/G/Robotmaster/dataset/data/labels/train/'
     changelabel(label_path, imwrite_path, 1, 1)
 
     # img_PIL = cv2.imread(r'E:\Robotmaster\dataset\mydata\images\train\9.jpg')

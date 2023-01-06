@@ -5,22 +5,22 @@ import random
 import os
 
 # 原始路径
-image_original_path = r'E:\Robotmaster\2021-RMUC-0417-0916\images\\'
-label_original_path = r'E:\Robotmaster\2021-RMUC-0417-0916\labels\\'
+image_original_path = r'/media/yuesang/G/Robotmaster/shangjiao/images/'
+label_original_path = r'/media/yuesang/G/Robotmaster/shangjiao/labels/'
 # 训练集路径
-train_image_path = r'E:\Robotmaster\rmdata\train\images\\'
-train_label_path = r'E:\Robotmaster\rmdata\train\labels\\'
+train_image_path = r'/media/yuesang/G/Robotmaster/rmdata/images/train/'
+train_label_path = r'/media/yuesang/G/Robotmaster/rmdata/labels/train/'
 # 验证集路径
-val_image_path = r'E:\Robotmaster\rmdata\val\images\\'
-val_label_path = r'E:\Robotmaster\rmdata\val\labels\\'
+val_image_path = r'/media/yuesang/G/Robotmaster/rmdata/images/val/'
+val_label_path = r'/media/yuesang/G/Robotmaster/rmdata/labels/val/'
 # 测试集路径
-test_image_path = r'E:\Robotmaster\rmdata\test\images\\'
-test_label_path = r'E:\Robotmaster\rmdata\test\labels\\'
+test_image_path = r'/media/yuesang/G/Robotmaster/rmdata/images/test/'
+test_label_path = r'/media/yuesang/G/Robotmaster/rmdata/labels/test/'
 
 # 数据集划分比例，训练集75%，验证集15%，测试集15%
-train_percent = 0.7
-val_percent = 0.15
-test_percent = 0.15
+train_percent = 0.9
+val_percent = 0.1
+test_percent = 0
 
 
 # 检查文件夹是否存在

@@ -2,6 +2,7 @@ import os
 import albumentations as A
 import cv2
 import matplotlib as plt
+import numpy
 
 if __name__=='__main__':
     img=cv2.imread(r"E:\Robotmaster\2021-RMUC-0417-0916\images\779.jpg")

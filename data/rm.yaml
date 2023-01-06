@@ -2,4 +2,6 @@ train: /media/yuesang/G/Robotmaster/dataset/data/images
 val: /media/yuesang/G/Robotmaster/dataset/data/images
 
 nc: 4
-names: ['1','2','3','4']
+names: [
+  '1','2','3','4'
+]

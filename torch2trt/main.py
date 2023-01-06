@@ -82,6 +82,7 @@ def img_vis(img, orgimg, pred, vis_thres=0.6):
     for i, det in enumerate(pred):  # detections per image
         if len(det):
             # Rescale boxes from img_size to im0 size
+            temp=det[:, :4]
             det[:, :4] = scale_coords(img.shape[2:], det[:, :4], orgimg.shape).round()
 
             # Print results
@@ -112,18 +113,18 @@ def img_vis(img, orgimg, pred, vis_thres=0.6):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--img_path', type=str,
-                        default=r"/media/yuesang/G/Robotmaster/dataset/data/images/train/0dd119c24d073325871696e372069ea6.jpg",
+                        default=r"/media/yuesang/KESU/Robotmaster/dataset/data/images/train/0dd119c24d073325871696e372069ea6.jpg",
                         help='img path')
-    parser.add_argument('--trt_path', type=str, default=r"/home/yuesang/Project/PycharmProjects/FourPoint/runs/train/exp5/weights/best.trt", help='trt_path')
+    parser.add_argument('--trt_path', type=str, default=r"../runs/train/rm/weights/best2.trt", help='trt_path')
     parser.add_argument('--output_shape', type=list, default=[1, 25200, 19],
                         help='input[1,3,640,640] ->  output[1,25200,16]')
-    parser.add_argument('--video', default=r"/media/yuesang/G/Robotmaster/dataset/video/video/2.mp4",
+    parser.add_argument('--video', default=r"/media/yuesang/KESU/Robotmaster/dataset/video/video/2.mp4",
                         help='using video')
     parser.add_argument('--conf_thres', type=float, default=0.5, help='')
     parser.add_argument('--iou_thres', type=float, default=0.5, help='')
     opt = parser.parse_args()
     model = TrtModel(opt.trt_path)
-    if opt.video:
+    if opt.video!="":
         cap = cv2.VideoCapture(opt.video)
         while cap.isOpened():
 
@@ -138,7 +139,7 @@ if __name__ == '__main__':
             cv2.waitKey(1)
         cap.release()
         cv2.destroyAllWindows()
-    else:
+    if opt.img_path != "":
         img, orgimg = img_process(opt.img_path)
         pred = model(img.numpy()).reshape(opt.output_shape)  # forward
         model.destroy()
@@ -147,4 +148,4 @@ if __name__ == '__main__':
         pred = non_max_suppression_face(torch.from_numpy(pred), opt.conf_thres, opt.iou_thres)
         # ============可视化================
         img_vis(img, orgimg, pred)
-        cv2.waitKey(1500)
+        cv2.waitKey(3000)

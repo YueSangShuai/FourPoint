@@ -55,8 +55,7 @@ def show_results(img, xyxy, conf, landmarks, class_num):
     y1 = int(xyxy[1])
     x2 = int(xyxy[2])
     y2 = int(xyxy[3])
-    cv2.rectangle(img, (x1,y1), (x2, y2), (0,255,0), thickness=tl, lineType=cv2.LINE_AA)
-
+    cv2.rectangle(img, (x1, y1), (x2, y2), (0, 255, 0), thickness=tl, lineType=cv2.LINE_AA)
 
     clors = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (0, 255, 255)]
 
@@ -69,7 +68,7 @@ def show_results(img, xyxy, conf, landmarks, class_num):
         if i < 2:
             point2_x = int(landmarks[2 * (i + 2)])
             point2_y = int(landmarks[2 * (i + 2) + 1])
-            cv2.line(img, (point_x, point_y), (point2_x, point2_y),  (255, 0, 255), 4,3)
+            cv2.line(img, (point_x, point_y), (point2_x, point2_y), (255, 0, 255), 4, 3)
         cv2.circle(img, (point_x, point_y), 5, clors[i], -1)
 
     tf = max(tl - 1, 1)  # font thickness
@@ -143,7 +142,6 @@ def detect_one(model, image_path, device):
 
 
 def detect_video(model, image, device, image_size, conf_thres, iou_thres):
-
     loop_start = time.time()
     # Load model
     img_size = image_size
@@ -215,26 +213,27 @@ def detect_video(model, image, device, image_size, conf_thres, iou_thres):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--weights', nargs='+', type=str,
-                        default=r'runs/train/exp5/weights/best.pt',
+                        default=r'runs/train/rm/weights/best.pt',
                         help='model.pt path(s)')
-    parser.add_argument('--image', type=str, default=r"/media/yuesang/G/Robotmaster/dataset/data/images/train/0dd119c24d073325871696e372069ea6.jpg",
+    parser.add_argument('--image', type=str, default="",
                         help='source')  # file/folder, 0 for webcam
     parser.add_argument('--img_size', type=int, default=640, help='inference size (pixels)')
-    parser.add_argument('--video', default=r"/media/yuesang/G/Robotmaster/dataset/video/video/3.mp4", help='using video')
+    parser.add_argument('--video', default=r"/media/yuesang/KESU/Robotmaster/dataset/video/video/1.mp4",
+                        help='using video')
     parser.add_argument('--conf_thres', type=float, default=0.5, help='')
     parser.add_argument('--iou_thres', type=float, default=0.5, help='')
-
+    parser.add_argument('--device', default='0', help='cuda device, i.e. 0 or 0,1,2,3 or cpu')
     opt = parser.parse_args()
     print(opt)
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    device=select_device(opt.device)
     model = load_model(opt.weights, device)
-    if opt.video:
 
+    if not opt.video == "":
         cap = cv2.VideoCapture(opt.video)
         while cap.isOpened():
             ret, frame = cap.read()
 
-            write_frame=detect_video(model, frame, device, opt.img_size, opt.conf_thres, opt.iou_thres)
+            write_frame = detect_video(model, frame, device, opt.img_size, opt.conf_thres, opt.iou_thres)
 
         cap.release()
         cv2.destroyAllWindows()

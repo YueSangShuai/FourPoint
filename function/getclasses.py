@@ -14,7 +14,7 @@ def GetAnnotBoxLoc(file_dir):
             labelName.add(Object.text)
     return list(labelName)
 
-path=r'\boot\bamboo\train\lables\*.xml'
+path=r'/media/yuesang/G/Robotmaster/rmdata/labels/train/*.txt'
 
 s=GetAnnotBoxLoc(path)
 print(s)
